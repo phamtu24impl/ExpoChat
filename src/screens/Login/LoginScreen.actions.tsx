@@ -6,22 +6,22 @@ import appLoadingActions from '../../components/AppLoading/appLoading.actions'
 import authDomain from '../../domain/auth'
 
 const login = (username: string) => async (dispatch: any, getState: any) => {
-    dispatch(appLoadingActions.start())
-    try {
-        const response = await createApiHandler(dispatch, getState)(() => LoginApi.login(username))
-        dispatch(authDomain.action.setAuthInfo(response.data._id))
-        dispatch(authDomain.action.setCurrentUser({ id: response.data._id, username }))
-    } catch (e) {
-        // TODO: handle error
-        console.log(e.message)
-        Alert.alert(e.message, e.message)
-    } finally {
-        dispatch(appLoadingActions.finish())
-    }
+  dispatch(appLoadingActions.start())
+  try {
+    const response = await createApiHandler(dispatch, getState)(() => LoginApi.login(username))
+    dispatch(authDomain.action.setAuthInfo(response.data._id))
+    dispatch(authDomain.action.setCurrentUser({ id: response.data._id, username }))
+  } catch (e) {
+    // TODO: handle error
+    console.log(e.message)
+    Alert.alert(e.message, e.message)
+  } finally {
+    dispatch(appLoadingActions.finish())
+  }
 }
 
 const actions = {
-    login
+  login,
 }
 
 export default actions

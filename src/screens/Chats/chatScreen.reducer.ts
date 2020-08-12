@@ -10,19 +10,19 @@ import type { Message } from '../../types/local'
 import actions from './chatScreen.actions'
 
 export type State = {
-    conversations: Message[]
+  conversations: Message[]
 }
 
 const initialState: State = {
-    conversations: []
+  conversations: [],
 }
 
 const chatScreenReducer = produce((draftState: Draft<State>, action: any) => {
-    switch (action.type) {
-        case actions.types.SET_MESSAGES:
-            draftState.conversations = action.payload
-            break
-    }
+  switch (action.type) {
+    case actions.types.SET_MESSAGES:
+      draftState.conversations = action.payload
+      break
+  }
 }, initialState)
 
 export default chatScreenReducer

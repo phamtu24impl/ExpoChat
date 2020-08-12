@@ -9,7 +9,7 @@ const getState = (state: any) => state.auth
 const getUsers = createSelector(getState, (state: State): User[] => state.users)
 
 const authSelectors = {
-    getUsers
+  getUsers,
 }
 
 export default authSelectors

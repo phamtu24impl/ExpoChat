@@ -18,33 +18,23 @@ import ChatDetailScreen from './ChatDetail'
 const Stack = createStackNavigator()
 
 const Screens = () => {
-    const isAuthenticated = useSelector(authDomain.selector.getIsAuthenticated)
-    return (
-        <>
-            <NavigationContainer>
-                <Stack.Navigator>
-                    {isAuthenticated ?
-                        <>
-                            <Stack.Screen
-                                name={screenNames.chats}
-                                component={ChatsScreen}
-                            />
-                            <Stack.Screen
-                                name={screenNames.chatDetail}
-                                component={ChatDetailScreen}
-                            />
-                        </> :
-                        <Stack.Screen
-                            name={screenNames.login}
-                            component={LoginScreen}
-                        />}
-
-
-
-                </Stack.Navigator>
-            </NavigationContainer>
-        </>
-    )
+  const isAuthenticated = useSelector(authDomain.selector.getIsAuthenticated)
+  return (
+    <>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {isAuthenticated ? (
+            <>
+              <Stack.Screen name={screenNames.chats} component={ChatsScreen} />
+              <Stack.Screen name={screenNames.chatDetail} component={ChatDetailScreen} />
+            </>
+          ) : (
+            <Stack.Screen name={screenNames.login} component={LoginScreen} />
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  )
 }
 
 export default Screens

@@ -6,17 +6,17 @@ import type { User } from '../../types/local'
 import actions from './auth.actions'
 
 export type State = {
-  token: string,
-  isAuthenticated: boolean,
-  currentUser: User,
+  token: string
+  isAuthenticated: boolean
+  currentUser: User
 }
 
 const initialState: State = {
   token: '',
   isAuthenticated: false,
   currentUser: {
-    username: "",
-    id: ""
+    username: '',
+    id: '',
   },
 }
 

@@ -30,15 +30,15 @@ const appReducer = combineReducers({
   appLoading: appLoadingReducer,
   auth: persistReducer(authPersistConfig, authDomainReducer),
   screens: combineReducers({
-    chat: chatScreenReducer
-  })
+    chat: chatScreenReducer,
+  }),
 })
 
 export function rootReducer(state: any, action: any) {
   switch (action.type) {
     case rootActions.types.RESET_STATE: {
       Object.values(persistKeys).forEach((persistKey) => {
-        storage.removeItem(`persist:${persistKey}`).catch(() => { })
+        storage.removeItem(`persist:${persistKey}`).catch(() => {})
       })
       return appReducer(undefined, action)
     }
