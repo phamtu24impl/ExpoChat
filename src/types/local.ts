@@ -1,6 +1,6 @@
 export type User = {
   username: string
-  id: string
+  _id: string
 }
 
 export type AuthInfo = {
@@ -8,7 +8,7 @@ export type AuthInfo = {
 }
 
 export type Response<Data, Metadata = {}> = {
-  data: Data[]
+  data: Data
   metadata: Metadata
 }
 
@@ -21,6 +21,7 @@ export type Message = {
   updatedAt: Date
 }
 export type Conversation = {
+  _id: string
   member: User[]
   messages: Message[]
 }

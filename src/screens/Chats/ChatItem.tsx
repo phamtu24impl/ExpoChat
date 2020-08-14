@@ -2,25 +2,27 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
-import type { Message } from '../../types/local'
+import type { Conversation } from '../../types/local'
 import screenNames from '../../config/screenNames'
 
 type Props = {
-  message: Message
+  conversation: Conversation
 }
 
 const ChatItem = (props: Props) => {
   const navigation = useNavigation()
+  const { conversation } = props
+  console.log(props)
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate(screenNames.chatDetail, { message: props.message })}
+      onPress={() => navigation.navigate(screenNames.chatDetail, { conversation: conversation })}
     >
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.avatar} />
         <View style={styles.info}>
-          <Text style={styles.name}>{props.message.sender.username}</Text>
-          <Text>{props.message.content}</Text>
+          <Text style={styles.name}>{conversation.messages[0].sender.username}</Text>
+          <Text>{conversation.messages[0].content}</Text>
         </View>
       </View>
     </TouchableOpacity>

@@ -1,37 +1,46 @@
-import { Alert } from 'react-native'
-
-import type { Message } from '../../types/local'
 import createApiHandler from '../../domain/auth/createApiHandler'
 import { ConversationApi } from '../../api'
-import appLoadingActions from '../../components/AppLoading/appLoading.actions'
+import conversationActions from '../../domain/conversations/conversations.actions'
+import { Message } from '../../types/local'
 
 const types = {
-  SET_MESSAGES: 'SET_MESSAGES',
+  FETCH_CONVERSATION: 'FETCH_CONVERSATION',
+  FETCH_CONVERSATION_FAIL: 'FETCH_CONVERSATION_FAIL',
+  FETCH_CONVERSATION_SUCCESS: 'FETCH_CONVERSATION_SUCCESS',
+  SEND_MESSAGE: 'SEND_MESSAGE',
+  SEND_MESSAGE_SUCCESS: 'SEND_MESSAGE_SUCCESS',
+  SEND_MESSAGE_FAIL: 'SEND_MESSAGE_FAIL'
 }
 
-const setConversations = (payload: Message[]) => ({
-  type: types.SET_MESSAGES,
-  payload,
-})
+const fetchConversation = (id: string) => async (dispatch: any, getState: any) => {
+  dispatch({ type: types.FETCH_CONVERSATION, payload: id })
 
-const fetchConversations = () => async (dispatch: any, getState: any) => {
-  dispatch(appLoadingActions.start())
+  const handleApi = createApiHandler(dispatch, getState)
   try {
-    const response = await createApiHandler(dispatch, getState)(() => ConversationApi.fetchConversations())
-    console.log(response)
-    dispatch(setConversations(response.data[0].messages))
-  } catch (e) {
-    // TODO: handle error
-    console.log(e.message)
-    Alert.alert(e.message, e.message)
-  } finally {
-    dispatch(appLoadingActions.finish())
+    const { data } = await handleApi(() => ConversationApi.fetchConversation(id))
+    dispatch(conversationActions.setConversations(data))
+    dispatch({ type: types.FETCH_CONVERSATION_SUCCESS, payload: data })
+  } catch (err) {
+    dispatch({ type: types.SEND_MESSAGE_FAIL, payload: err })
+  }
+}
+
+const sendMessage = (conversationId: string, message: Message) => async (dispatch: any, getState: any) => {
+  dispatch({ type: types.SEND_MESSAGE })
+
+  const handleApi = createApiHandler(dispatch, getState)
+  try {
+    const { data } = await handleApi(() => ConversationApi.createNewMessage(conversationId, message))
+    dispatch({ type: types.SEND_MESSAGE_SUCCESS, payload: data })
+  } catch (err) {
+    dispatch({ type: types.SEND_MESSAGE_FAIL, payload: err })
   }
 }
 
 const actions = {
-  fetchConversations,
   types,
+  fetchConversation,
+  sendMessage,
 }
 
 export default actions

@@ -1,31 +1,22 @@
 import React, { useState, useCallback, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { GiftedChat } from 'react-native-gifted-chat'
-import { StackNavigationProp } from '@react-navigation/stack'
-import io from 'socket.io-client'
+import Chat from './Chat'
+import authDomain from '../../domain/auth'
 
-export default function Example({ navigation }: { navigation: StackNavigationProp<any, any> }) {
-  const [messages, setMessages] = useState([])
+export default function Example({ route }: { route: any }) {
+  const { conversation } = route.params
+  const currentUser = useSelector(authDomain.selector.getCurrentUserSelector)
 
   useEffect(() => {
-    const socket = io('http://192.168.0.101:3000', {
-      query: {
-        userId: '5f2fc88f36c7540029883a28',
-      },
-    })
-    socket.emit('joinConversation', { id: '5f2fc88f36c7540029883a28' })
+    console.log('test', conversation)
   }, [])
 
   const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+
   }, [])
 
   return (
-    <GiftedChat
-      messages={messages}
-      onSend={(messages) => onSend(messages)}
-      user={{
-        _id: 1,
-      }}
-    />
+    <Chat conversation={conversation} currentUser={currentUser} onSend={onSend} />
   )
 }

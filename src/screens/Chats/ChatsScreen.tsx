@@ -5,35 +5,34 @@ import { StackNavigationProp } from '@react-navigation/stack'
 
 import ConversationItem from './ChatItem'
 import selectors from './chatScreen.selectors'
-import actions from './chatScreen.actions'
 import authDomain from '../../domain/auth'
 import conversationsDomain from '../../domain/conversations'
 
-const onButtonPress = () => {
-  Alert.prompt(
-    'New conversation',
-    'Enter a username: ',
-    [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {
-        text: 'OK',
-        onPress: (username) => console.log('OK Pressed, password: ' + username),
-      },
-    ],
-    'plain-text'
-  )
-}
-
 const ConversationScreen = ({ navigation }: { navigation: StackNavigationProp<any, any> }) => {
   const dispatch = useDispatch()
-  const fetchConversations = useCallback(() => dispatch(actions.fetchConversations()), [])
+  const fetchConversations = useCallback(() => dispatch(conversationsDomain.action.fetchConversations()), [])
   const logout = useCallback(() => dispatch(authDomain.action.logout()), [])
   const conversations = useSelector(selectors.conversationsSelector)
-  const conversationsTest = useSelector(conversationsDomain.selector.conversationsSelector)
+
+  const onButtonPress = useCallback(() => {
+    Alert.prompt(
+      'New conversation',
+      'Enter a username: ',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: (username) => {
+            dispatch
+          },
+        },
+      ],
+      'plain-text'
+    )
+  }, [])
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -44,13 +43,12 @@ const ConversationScreen = ({ navigation }: { navigation: StackNavigationProp<an
 
   useEffect(() => {
     fetchConversations()
-    console.log('test', conversationsTest)
   }, [])
 
   return (
     <FlatList
       data={conversations}
-      renderItem={({ item }) => <ConversationItem message={item} />}
+      renderItem={({ item }) => <ConversationItem conversation={item} />}
       keyExtractor={(item, index) => String(index)}
     />
   )

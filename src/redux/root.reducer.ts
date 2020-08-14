@@ -8,7 +8,6 @@ import { persistReducer } from 'redux-persist'
 import type { PersistConfig } from 'redux-persist/lib/types'
 import { combineReducers } from 'redux'
 import appLoadingReducer from '../components/AppLoading/appLoading.reducer'
-import chatScreenReducer from '../screens/Chats/chatScreen.reducer'
 
 import rootActions from './root.actions'
 import authDomainReducer from '../domain/auth/auth.reducer'
@@ -31,16 +30,13 @@ const appReducer = combineReducers({
   appLoading: appLoadingReducer,
   auth: persistReducer(authPersistConfig, authDomainReducer),
   conversations: conversationsReducer,
-  screens: combineReducers({
-    chat: chatScreenReducer,
-  }),
 })
 
 export function rootReducer(state: any, action: any) {
   switch (action.type) {
     case rootActions.types.RESET_STATE: {
       Object.values(persistKeys).forEach((persistKey) => {
-        storage.removeItem(`persist:${persistKey}`).catch(() => {})
+        storage.removeItem(`persist:${persistKey}`).catch(() => { })
       })
       return appReducer(undefined, action)
     }

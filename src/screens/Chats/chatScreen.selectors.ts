@@ -1,15 +1,20 @@
 import { createSelector } from 'reselect'
 
-import type { Message } from '../../types/local'
+import type { Conversation } from '../../types/local'
 
-import type { State } from './chatScreen.reducer'
+import type { State as ConversationDomainState } from '../../domain/conversations/conversations.reducer'
 
-const getState = (state: any): State => state.screens.chat
+const conversationDomainState = (state: any): ConversationDomainState => state.conversations
 
-const conversationsSelector = createSelector(getState, (state: State): Message[] => state.conversations)
+const conversationsSelector = createSelector(conversationDomainState, (state: ConversationDomainState): Conversation[] => {
+  const conversations: Conversation[] = Object.values(state.conversations)
+  return conversations
+
+
+})
 
 const chatScreenSelector = {
-  conversationsSelector,
+  conversationsSelector
 }
 
 export default chatScreenSelector

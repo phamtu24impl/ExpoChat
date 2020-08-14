@@ -1,15 +1,15 @@
 import { Alert } from 'react-native'
 
-import type { Message } from '../../types/local'
+import type { Conversation } from '../../types/local'
 import createApiHandler from '../auth/createApiHandler'
 import { ConversationApi } from '../../api'
 import appLoadingActions from '../../components/AppLoading/appLoading.actions'
 
 const types = {
-  SET_CONVERSATIONS: 'SET_CONVERSATIONS',
+  SET_CONVERSATIONS: 'conversation.SET_CONVERSATIONS',
 }
 
-const setConversations = (payload: Message[]) => ({
+const setConversations = (payload: Conversation[]) => ({
   type: types.SET_CONVERSATIONS,
   payload,
 })
@@ -17,9 +17,8 @@ const setConversations = (payload: Message[]) => ({
 const fetchConversations = () => async (dispatch: any, getState: any) => {
   dispatch(appLoadingActions.start())
   try {
-    const response = await createApiHandler(dispatch, getState)(() => ConversationApi.fetchConversations())
-    console.log(response)
-    dispatch(setConversations(response.data.map((conv) => conv.messages[0])))
+    const { data } = await createApiHandler(dispatch, getState)(() => ConversationApi.fetchConversations())
+    dispatch(setConversations(data))
   } catch (e) {
     // TODO: handle error
     console.log(e.message)
@@ -31,6 +30,7 @@ const fetchConversations = () => async (dispatch: any, getState: any) => {
 
 const actions = {
   fetchConversations,
+  setConversations,
   types,
 }
 
