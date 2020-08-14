@@ -27,7 +27,9 @@ const authDomainReducer = produce((draftState: Draft<State>, action: any) => {
       draftState.token = action.payload
       draftState.isAuthenticated = true
       break
-
+    case actions.types.LOG_OUT:
+      draftState.token = null
+      draftState.isAuthenticated = false
     case actions.types.SET_CURRENT_USER:
       draftState.currentUser = action.payload
       break

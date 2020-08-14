@@ -6,11 +6,11 @@ import { ConversationApi } from '../../api'
 import appLoadingActions from '../../components/AppLoading/appLoading.actions'
 
 const types = {
-  SET_CONVERSATIONS: 'SET_CONVERSATIONS',
+  SET_MESSAGES: 'SET_MESSAGES',
 }
 
 const setConversations = (payload: Message[]) => ({
-  type: types.SET_CONVERSATIONS,
+  type: types.SET_MESSAGES,
   payload,
 })
 
@@ -19,7 +19,7 @@ const fetchConversations = () => async (dispatch: any, getState: any) => {
   try {
     const response = await createApiHandler(dispatch, getState)(() => ConversationApi.fetchConversations())
     console.log(response)
-    dispatch(setConversations(response.data.map((conv) => conv.messages[0])))
+    dispatch(setConversations(response.data[0].messages))
   } catch (e) {
     // TODO: handle error
     console.log(e.message)

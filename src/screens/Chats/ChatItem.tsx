@@ -19,7 +19,7 @@ const ChatItem = (props: Props) => {
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.avatar} />
         <View style={styles.info}>
-          <Text style={styles.name}>Name</Text>
+          <Text style={styles.name}>{props.message.sender.username}</Text>
           <Text>{props.message.content}</Text>
         </View>
       </View>

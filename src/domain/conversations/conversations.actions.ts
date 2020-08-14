@@ -1,7 +1,7 @@
 import { Alert } from 'react-native'
 
 import type { Message } from '../../types/local'
-import createApiHandler from '../../domain/auth/createApiHandler'
+import createApiHandler from '../auth/createApiHandler'
 import { ConversationApi } from '../../api'
 import appLoadingActions from '../../components/AppLoading/appLoading.actions'
 

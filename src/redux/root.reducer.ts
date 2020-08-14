@@ -12,6 +12,7 @@ import chatScreenReducer from '../screens/Chats/chatScreen.reducer'
 
 import rootActions from './root.actions'
 import authDomainReducer from '../domain/auth/auth.reducer'
+import conversationsReducer from '../domain/conversations/conversations.reducer'
 
 const storage = AsyncStorage
 
@@ -29,6 +30,7 @@ const authPersistConfig = {
 const appReducer = combineReducers({
   appLoading: appLoadingReducer,
   auth: persistReducer(authPersistConfig, authDomainReducer),
+  conversations: conversationsReducer,
   screens: combineReducers({
     chat: chatScreenReducer,
   }),

@@ -6,6 +6,8 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import ConversationItem from './ChatItem'
 import selectors from './chatScreen.selectors'
 import actions from './chatScreen.actions'
+import authDomain from '../../domain/auth'
+import conversationsDomain from '../../domain/conversations'
 
 const onButtonPress = () => {
   Alert.prompt(
@@ -29,16 +31,20 @@ const onButtonPress = () => {
 const ConversationScreen = ({ navigation }: { navigation: StackNavigationProp<any, any> }) => {
   const dispatch = useDispatch()
   const fetchConversations = useCallback(() => dispatch(actions.fetchConversations()), [])
+  const logout = useCallback(() => dispatch(authDomain.action.logout()), [])
   const conversations = useSelector(selectors.conversationsSelector)
+  const conversationsTest = useSelector(conversationsDomain.selector.conversationsSelector)
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => <Button title="new" onPress={onButtonPress} />,
+      headerLeft: () => <Button title="Log out" onPress={logout} />,
     })
   }, [])
 
   useEffect(() => {
     fetchConversations()
+    console.log('test', conversationsTest)
   }, [])
 
   return (

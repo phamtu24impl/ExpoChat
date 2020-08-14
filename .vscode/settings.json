@@ -1,0 +1,5 @@
+{
+  "javascript.implicitProjectConfig.checkJs": true,
+  "typescript.validate.enable": true,
+  "javascript.validate.enable": true
+}
