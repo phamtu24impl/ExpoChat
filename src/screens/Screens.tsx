@@ -10,6 +10,7 @@ import { Button, Alert } from 'react-native'
 
 import authDomain from '../domain/auth'
 import screenNames from '../config/screenNames'
+import { navigationRef } from '../utils/RootNavigation'
 
 import LoginScreen from './Login'
 import ChatsScreen from './Chats'
@@ -21,7 +22,7 @@ const Screens = () => {
   const isAuthenticated = useSelector(authDomain.selector.getIsAuthenticated)
   return (
     <>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator>
           {isAuthenticated ? (
             <>

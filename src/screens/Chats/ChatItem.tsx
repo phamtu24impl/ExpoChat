@@ -12,7 +12,9 @@ type Props = {
 const ChatItem = (props: Props) => {
   const navigation = useNavigation()
   const { conversation } = props
-  console.log(props)
+  if (conversation.messages.length === 0) {
+    return null
+  }
   return (
     <TouchableOpacity
       style={styles.container}
@@ -21,7 +23,7 @@ const ChatItem = (props: Props) => {
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.avatar} />
         <View style={styles.info}>
-          <Text style={styles.name}>{conversation.messages[0].sender.username}</Text>
+          <Text style={styles.name}>{conversation.members[1].username}</Text>
           <Text>{conversation.messages[0].content}</Text>
         </View>
       </View>

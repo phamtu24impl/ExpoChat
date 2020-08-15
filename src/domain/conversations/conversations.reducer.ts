@@ -20,7 +20,14 @@ const initialState: State = {
 const conversationsReducer = produce((draftState: Draft<State>, action: any) => {
   switch (action.type) {
     case actions.types.SET_CONVERSATIONS:
-      draftState.conversations = lodash.keyBy(action.payload, '_id')
+      draftState.conversations = {
+        ...draftState.conversations,
+        ...lodash.keyBy(action.payload, '_id'),
+      }
+      break
+    case actions.types.ADD_MESSAGE:
+      const { convId, message } = action.payload
+      draftState.conversations[convId].messages.unshift(message)
       break
   }
 }, initialState)

@@ -22,6 +22,6 @@ export type Message = {
 }
 export type Conversation = {
   _id: string
-  member: User[]
+  members: User[]
   messages: Message[]
 }

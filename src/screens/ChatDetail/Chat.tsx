@@ -1,48 +1,53 @@
 import React, { memo, useMemo, useCallback } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
-import { User, Message, Conversation } from '../../types/local'
+import { Conversation, User } from '../../types/local'
 
-const toGiftedChatUser = (user: User) => ({
-    _id: user._id,
+const toGiftedChatUser = (user: any) => {
+  console.log(user)
+  return {
+    _id: user.id,
     name: user.username,
     avatar: '',
+  }
+}
+
+const toGiftedChatMessage = (message: any) => ({
+  _id: message._id,
+  text: message.content,
+  createdAt: message.createdAt,
+  user: toGiftedChatUser(message.sender),
 })
 
-const toGiftedChatMessage = (message: Message) => ({
-    _id: message._id,
-    text: message.content,
-    createdAt: message.createdAt,
-    user: toGiftedChatUser(message.sender),
+const toLocalUser = (user: any) => ({
+  // eslint-disable-next-line no-underscore-dangle
+  id: user._id,
+  username: user.name,
 })
 
-const toLocalUser = (user: User) => ({
-    id: user._id,
-    username: user.username,
-})
-
-const toLocalMessage = (message: Message) => ({
-    id: message._id,
-    content: message.content,
-    createdAt: message.createdAt,
-    sender: toLocalUser(message.sender),
+const toLocalMessage = (message: any) => ({
+  // eslint-disable-next-line no-underscore-dangle
+  id: message._id,
+  content: message.text,
+  createdAt: message.createdAt,
+  sender: toLocalUser(message.user),
 })
 
 function Chat({
-    conversation,
-    currentUser,
-    onSend
+  conversation,
+  currentUser,
+  onSend,
 }: {
-    conversation: Conversation,
-    currentUser: User,
-    onSend: (message?: any) => void
+  conversation: Conversation
+  currentUser: User
+  onSend: (message: any) => void
 }) {
-    const messages = useMemo(() => conversation.messages.map(toGiftedChatMessage), [conversation.messages])
-    const user = useMemo(() => toGiftedChatUser(currentUser), [currentUser])
-    const onSendMessage = useCallback((newMessages) => {
-        onSend(newMessages.map(toLocalMessage)[0])
-    }, [])
+  const messages = useMemo(() => conversation.messages.map(toGiftedChatMessage), [conversation.messages])
+  const user = useMemo(() => toGiftedChatUser(currentUser), [currentUser])
+  const onSendMessage = useCallback((newMessages) => {
+    onSend(newMessages.map(toLocalMessage)[0])
+  }, [])
 
-    return <GiftedChat messages={messages} onSend={onSendMessage} user={user} />
+  return <GiftedChat messages={messages} onSend={onSendMessage} user={user} />
 }
 
 export default memo(Chat)

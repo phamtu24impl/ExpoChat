@@ -1,17 +1,23 @@
 import { Alert } from 'react-native'
 
-import type { Conversation } from '../../types/local'
+import type { Conversation, Message } from '../../types/local'
 import createApiHandler from '../auth/createApiHandler'
 import { ConversationApi } from '../../api'
 import appLoadingActions from '../../components/AppLoading/appLoading.actions'
 
 const types = {
   SET_CONVERSATIONS: 'conversation.SET_CONVERSATIONS',
+  ADD_MESSAGE: 'ADD_MESSAGE',
 }
 
 const setConversations = (payload: Conversation[]) => ({
   type: types.SET_CONVERSATIONS,
   payload,
+})
+
+const addNewMessage = ({ convId, message }: { convId: string; message: Message }) => ({
+  type: types.ADD_MESSAGE,
+  payload: { convId, message },
 })
 
 const fetchConversations = () => async (dispatch: any, getState: any) => {
@@ -31,6 +37,7 @@ const fetchConversations = () => async (dispatch: any, getState: any) => {
 const actions = {
   fetchConversations,
   setConversations,
+  addNewMessage,
   types,
 }
 

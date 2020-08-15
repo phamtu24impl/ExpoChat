@@ -29,10 +29,12 @@ function AppLoading() {
   }
 
   return (
-    <View
-      style={{ flex: 1 }}
-    >
-      <ActivityIndicator size={100} color='white' style={{ alignItems: 'center', flex: 1, backgroundColor: '#rgba(0,0,0,0.2)' }} />
+    <View style={{ flex: 1 }}>
+      <ActivityIndicator
+        size={100}
+        color="white"
+        style={{ alignItems: 'center', flex: 1, backgroundColor: '#rgba(0,0,0,0.2)' }}
+      />
     </View>
   )
 }

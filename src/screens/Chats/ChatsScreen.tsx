@@ -4,9 +4,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { StackNavigationProp } from '@react-navigation/stack'
 
 import ConversationItem from './ChatItem'
-import selectors from './chatScreen.selectors'
+import actions from './chatsScreen.actions'
+import selectors from './chatsScreen.selectors'
 import authDomain from '../../domain/auth'
 import conversationsDomain from '../../domain/conversations'
+import screenNames from '../../config/screenNames'
 
 const ConversationScreen = ({ navigation }: { navigation: StackNavigationProp<any, any> }) => {
   const dispatch = useDispatch()
@@ -25,8 +27,8 @@ const ConversationScreen = ({ navigation }: { navigation: StackNavigationProp<an
         },
         {
           text: 'OK',
-          onPress: (username) => {
-            dispatch
+          onPress: (username?: string) => {
+            dispatch(actions.createNewConversation(username || ''))
           },
         },
       ],
