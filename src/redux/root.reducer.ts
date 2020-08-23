@@ -13,6 +13,7 @@ import rootActions from './root.actions'
 import authDomainReducer from '../domain/auth/auth.reducer'
 import conversationsReducer from '../domain/conversations/conversations.reducer'
 import chatsScreenReducer from '../screens/Chats/chatsScreen.reducer'
+import chatDetailReducer from '../screens/ChatDetail/chatDetail.reducers'
 
 const storage = AsyncStorage
 
@@ -33,6 +34,7 @@ const appReducer = combineReducers({
   conversations: conversationsReducer,
   screens: combineReducers({
     chats: chatsScreenReducer,
+    chatDetail: chatDetailReducer,
   }),
 })
 

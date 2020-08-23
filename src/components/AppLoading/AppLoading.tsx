@@ -32,7 +32,7 @@ function AppLoading() {
     <View style={{ flex: 1 }}>
       <ActivityIndicator
         size={100}
-        color="white"
+        color="red"
         style={{ alignItems: 'center', flex: 1, backgroundColor: '#rgba(0,0,0,0.2)' }}
       />
     </View>

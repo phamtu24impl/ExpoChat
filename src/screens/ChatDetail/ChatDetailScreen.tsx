@@ -2,29 +2,37 @@ import React, { useCallback, useEffect, useLayoutEffect } from 'react'
 import type { NavigationProp } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
 import { GiftedChat } from 'react-native-gifted-chat'
-import Chat from './Chat'
 import authDomain from '../../domain/auth'
-import { Conversation } from '../../types/local'
 
 import actions from './chatDetail.actions'
+import selector from './chatDetail.selectors'
+import { toGiftedChatUser, toGiftedChatMessage, toLocalMessage } from '../../utils/commonParsers'
+import { getChatName } from '../../utils/helpers'
 
-export default function Example({ route, navigation }: { navigation: NavigationProp<any, any>; route: any }) {
-  const { conversation }: { conversation: Conversation } = route.params
+export default function ChatDetailScreen({ route, navigation }: { navigation: NavigationProp<any, any>; route: any }) {
+  const { id } = route.params
   const currentUser = useSelector(authDomain.selector.getCurrentUserSelector)
+  const conversation = useSelector(selector.conversationSelector)
   const dispatch = useDispatch()
 
-  useEffect(() => {}, [])
-
-  const onSend = useCallback(
-    (message) => dispatch(actions.sendMessage({ convId: conversation._id, message: message })),
-    [dispatch]
-  )
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: conversation.members[0].username,
-    })
+  useEffect(() => {
+    dispatch(actions.fetchConversation(id))
   }, [])
 
-  return <Chat conversation={conversation} currentUser={currentUser} onSend={onSend} />
+  const onSend = useCallback((message) => dispatch(actions.sendMessage({ convId: id, message: message })), [dispatch])
+
+  useLayoutEffect(() => {
+    console.log('test', getChatName(conversation, currentUser))
+    navigation.setOptions({
+      title: getChatName(conversation, currentUser),
+    })
+  }, [conversation])
+
+  return (
+    <GiftedChat
+      user={toGiftedChatUser(currentUser)}
+      messages={conversation?.messages.map(toGiftedChatMessage)}
+      onSend={(newMessages) => onSend(newMessages.map(toLocalMessage)[0])}
+    />
+  )
 }

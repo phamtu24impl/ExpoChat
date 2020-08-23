@@ -9,8 +9,9 @@ const login = (username: string) => async (dispatch: any, getState: any) => {
   dispatch(appLoadingActions.start())
   try {
     const response = await createApiHandler(dispatch, getState)(() => LoginApi.login(username))
+    const { _id } = response.data
     dispatch(authDomain.action.setAuthInfo(response.data._id))
-    dispatch(authDomain.action.setCurrentUser({ id: response.data._id, username }))
+    dispatch(authDomain.action.setCurrentUser({ _id, username }))
   } catch (e) {
     // TODO: handle error
     console.log(e.message)

@@ -7,11 +7,23 @@ import appLoadingActions from '../../components/AppLoading/appLoading.actions'
 
 const types = {
   SET_CONVERSATIONS: 'conversation.SET_CONVERSATIONS',
+  SET_CONVERSATION: 'conversation.SET_CONVERSATION',
   ADD_MESSAGE: 'ADD_MESSAGE',
+  SET_MESSAGES: 'SET_MESSAGES',
 }
 
 const setConversations = (payload: Conversation[]) => ({
   type: types.SET_CONVERSATIONS,
+  payload,
+})
+
+const setConversation = (payload: Conversation) => ({
+  type: types.SET_CONVERSATION,
+  payload,
+})
+
+const setMessages = (payload: Message[]) => ({
+  type: types.SET_MESSAGES,
   payload,
 })
 
@@ -20,23 +32,9 @@ const addNewMessage = ({ convId, message }: { convId: string; message: Message }
   payload: { convId, message },
 })
 
-const fetchConversations = () => async (dispatch: any, getState: any) => {
-  dispatch(appLoadingActions.start())
-  try {
-    const { data } = await createApiHandler(dispatch, getState)(() => ConversationApi.fetchConversations())
-    dispatch(setConversations(data))
-  } catch (e) {
-    // TODO: handle error
-    console.log(e.message)
-    Alert.alert(e.message, e.message)
-  } finally {
-    dispatch(appLoadingActions.finish())
-  }
-}
-
 const actions = {
-  fetchConversations,
   setConversations,
+  setConversation,
   addNewMessage,
   types,
 }

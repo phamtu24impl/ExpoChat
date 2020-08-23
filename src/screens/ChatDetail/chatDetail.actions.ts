@@ -1,13 +1,18 @@
 import createApiHandler from '../../domain/auth/createApiHandler'
 import { ConversationApi } from '../../api'
 import conversationActions from '../../domain/conversations/conversations.actions'
-import { Message } from '../../types/local'
+import { Message, Conversation } from '../../types/local'
+
+const types = {
+  FETCH_CONVERSATION: 'FETCH_CONVERSATION',
+}
 
 const fetchConversation = (id: string) => async (dispatch: any, getState: any) => {
+  dispatch({ type: types.FETCH_CONVERSATION, payload: id })
   const handleApi = createApiHandler(dispatch, getState)
   try {
-    const { data } = await handleApi(() => ConversationApi.fetchConversation(id))
-    dispatch(conversationActions.setConversations(data))
+    const { data }: { data: Conversation } = await handleApi(() => ConversationApi.fetchConversation(id))
+    dispatch(conversationActions.setConversation(data))
   } catch (err) {}
 }
 
@@ -23,6 +28,7 @@ const sendMessage = ({ convId, message }: { convId: string; message: Message }) 
 }
 
 const actions = {
+  types,
   fetchConversation,
   sendMessage,
 }

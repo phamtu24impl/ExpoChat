@@ -6,17 +6,18 @@ import type { Message } from '../../types/local'
 import actions from './chatDetail.actions'
 
 export type State = {
-  messages: {
-    [key: string]: Message
-  }
+  id: string
 }
 
 const initialState: State = {
-  messages: {},
+  id: '',
 }
 
 const chatDetailReducer = produce((draftState: Draft<State>, action: any) => {
   switch (action.type) {
+    case actions.types.FETCH_CONVERSATION: {
+      draftState.id = action.payload
+    }
   }
 }, initialState)
 

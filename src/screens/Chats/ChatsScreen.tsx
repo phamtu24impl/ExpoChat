@@ -8,11 +8,11 @@ import actions from './chatsScreen.actions'
 import selectors from './chatsScreen.selectors'
 import authDomain from '../../domain/auth'
 import conversationsDomain from '../../domain/conversations'
-import screenNames from '../../config/screenNames'
+import useSocket from '../../components/socket/Socket'
 
 const ConversationScreen = ({ navigation }: { navigation: StackNavigationProp<any, any> }) => {
   const dispatch = useDispatch()
-  const fetchConversations = useCallback(() => dispatch(conversationsDomain.action.fetchConversations()), [])
+  const fetchConversations = useCallback(() => dispatch(actions.fetchConversations()), [])
   const logout = useCallback(() => dispatch(authDomain.action.logout()), [])
   const conversations = useSelector(selectors.conversationsSelector)
 
@@ -36,6 +36,19 @@ const ConversationScreen = ({ navigation }: { navigation: StackNavigationProp<an
     )
   }, [])
 
+  const onNewConversation = useCallback(
+    (data: any) => {
+      dispatch(conversationsDomain.action.setConversation(data.conversation))
+    },
+    [dispatch]
+  )
+  const onNewLastMessage = useCallback(
+    (data) => {
+      dispatch(conversationsDomain.action.addNewMessage({ convId: data.conversation._id, message: data.message }))
+    },
+    [dispatch]
+  )
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => <Button title="new" onPress={onButtonPress} />,
@@ -46,6 +59,9 @@ const ConversationScreen = ({ navigation }: { navigation: StackNavigationProp<an
   useEffect(() => {
     fetchConversations()
   }, [])
+
+  useSocket({ eventName: 'newConversation', handler: onNewConversation })
+  useSocket({ eventName: 'newLatestMessage', handler: onNewLastMessage })
 
   return (
     <FlatList

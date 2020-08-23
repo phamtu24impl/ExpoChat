@@ -1,4 +1,5 @@
 import type { User, AuthInfo } from '../../types/local'
+import rootActions from '../../redux/root.actions'
 
 const types = {
   SET_AUTH_INFO: 'AUTH.SET_AUTH_INFO',
@@ -16,9 +17,10 @@ const setCurrentUser = (payload: User) => ({
   payload,
 })
 
-const logout = () => ({
-  type: types.LOG_OUT,
-})
+const logout = () => (dispatch: any) => {
+  dispatch({ type: types.LOG_OUT })
+  dispatch(rootActions.resetState())
+}
 
 const authActions = {
   types,
